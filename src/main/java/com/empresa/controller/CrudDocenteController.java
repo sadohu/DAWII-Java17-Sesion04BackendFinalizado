@@ -54,6 +54,8 @@ public class CrudDocenteController {
 		try {
 			obj.setIdDocente(0);
 			obj.setFechaRegistro(new Date());
+			//Descomentar para la PC02
+			//obj.setFechaActualizacion(new Date());
 			obj.setEstado(1);
 			
 			//Validación de Nombre unique
@@ -69,6 +71,8 @@ public class CrudDocenteController {
 				salida.put("mensaje", "El DNI " + obj.getDni() + " ya existe");
 				return ResponseEntity.ok(salida);
 			}
+			
+
 			
 			Docente objSalida =  service.insertaActualizaDocente(obj);
 			if (objSalida == null) {
@@ -87,6 +91,9 @@ public class CrudDocenteController {
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> actualizaDocente(@RequestBody Docente obj) {
 		Map<String, Object> salida = new HashMap<>();
+		
+		//Descomentar para la PC02
+		//obj.setFechaActualizacion(new Date());
 		
 		//Validación de Nombre unique
 		List<Docente> lstDocenteNombre =  service.listaPorNombreIgualActualiza(obj.getNombre(), obj.getIdDocente());
