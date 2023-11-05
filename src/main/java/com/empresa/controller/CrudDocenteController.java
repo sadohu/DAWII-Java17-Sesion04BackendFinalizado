@@ -55,6 +55,21 @@ public class CrudDocenteController {
 			obj.setIdDocente(0);
 			obj.setFechaRegistro(new Date());
 			obj.setEstado(1);
+			
+			//Validación de Nombre unique
+			List<Docente> lstDocenteNombre =  service.listaPorNombreIgualRegistra(obj.getNombre());
+			if (!lstDocenteNombre.isEmpty()) {
+				salida.put("mensaje", "El Docente " + obj.getNombre() + " ya existe");
+				return ResponseEntity.ok(salida);
+			}
+			
+			//Validación de DNI unique
+			List<Docente> lstDocenteUnique =  service.listaPorDNIIgualRegistra(obj.getDni());
+			if (!lstDocenteUnique.isEmpty()) {
+				salida.put("mensaje", "El DNI " + obj.getDni() + " ya existe");
+				return ResponseEntity.ok(salida);
+			}
+			
 			Docente objSalida =  service.insertaActualizaDocente(obj);
 			if (objSalida == null) {
 				salida.put("mensaje", Constantes.MENSAJE_REG_ERROR);
@@ -72,6 +87,21 @@ public class CrudDocenteController {
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> actualizaDocente(@RequestBody Docente obj) {
 		Map<String, Object> salida = new HashMap<>();
+		
+		//Validación de Nombre unique
+		List<Docente> lstDocenteNombre =  service.listaPorNombreIgualActualiza(obj.getNombre(), obj.getIdDocente());
+		if (!lstDocenteNombre.isEmpty()) {
+			salida.put("mensaje", "El Docente " + obj.getNombre() + " ya existe");
+			return ResponseEntity.ok(salida);
+		}
+		
+		//Validación de DNI unique
+		List<Docente> lstDocenteUnique =  service.listaPorDNIIgualActualiza(obj.getDni(), obj.getIdDocente());
+		if (!lstDocenteUnique.isEmpty()) {
+			salida.put("mensaje", "El DNI " + obj.getDni() + " ya existe");
+			return ResponseEntity.ok(salida);
+		}
+		
 		try {
 			Docente objSalida =  service.insertaActualizaDocente(obj);
 			if (objSalida == null) {

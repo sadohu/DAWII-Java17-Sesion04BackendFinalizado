@@ -11,5 +11,12 @@ public interface DocenteService {
 	public abstract List<Docente> listaDocentePorNombreLike(String nombre);
 	public abstract void eliminaDocente(int idDocente);
 
+	// Validaciones CRUD Registrar
+	public abstract List<Docente> listaPorNombreIgualRegistra(String nombre);
+	public abstract List<Docente> listaPorDNIIgualRegistra(String dni);
+
+	// Validaciones CRUD Actualizar
+	public abstract List<Docente> listaPorNombreIgualActualiza(String nombre, int idDocente);
+	public abstract List<Docente> listaPorDNIIgualActualiza(String dni, int idDocente);
 	
 }

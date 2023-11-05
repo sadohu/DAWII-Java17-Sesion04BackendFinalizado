@@ -20,7 +20,7 @@ public class DocenteServiceImpl implements DocenteService {
 		return repository.save(docente);
 	}
 
-
+  
 	@Override
 	public List<Docente> listaDocentePorNombreLike(String nombre) {
 		return repository.listaPorNombreLike(nombre);
@@ -29,6 +29,30 @@ public class DocenteServiceImpl implements DocenteService {
 	@Override
 	public void eliminaDocente(int idDocente) {
 		repository.deleteById(idDocente);
+	}
+
+
+	@Override
+	public List<Docente> listaPorNombreIgualRegistra(String nombre) {
+		return repository.listaPorNombreIgualRegistra(nombre);
+	}
+
+
+	@Override
+	public List<Docente> listaPorDNIIgualRegistra(String dni) {
+		return repository.listaPorDNIIgualRegistra(dni);
+	}
+
+
+	@Override
+	public List<Docente> listaPorNombreIgualActualiza(String nombre, int idDocente) {
+		return repository.listaPorNombreIgualActualiza(nombre, idDocente);
+	}
+
+
+	@Override
+	public List<Docente> listaPorDNIIgualActualiza(String dni, int idDocente) {
+		return repository.listaPorDNIIgualActualiza(dni, idDocente);
 	}
 
 
