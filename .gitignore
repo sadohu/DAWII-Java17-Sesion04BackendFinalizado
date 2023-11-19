@@ -3,7 +3,7 @@ HELP.md
 target/
 .mvn
 .project
-.classpath	
+.classpath
 mvnw
 mvnw.cmd
 !**/src/main/**
@@ -16,3 +16,4 @@ mvnw.cmd
 .springBeans
 .sts4-cache
 bin
+.vscode/
