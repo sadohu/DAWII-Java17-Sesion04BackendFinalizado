@@ -7,6 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.empresa.entity.Docente;
 import com.empresa.service.DocenteService;
+import com.empresa.util.UtilExcel;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -91,5 +100,72 @@ public class DocenteConsultaController {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    private static String[] HEADERS = { "ID", "NOMBRE", "DNI", "DIRECCION", "ESTADO", "IDUBIGEO" };
+    private static String SHEET = "Docentes";
+    private static String TITLE = "REPORTE DE DOCENTES";
+    private static int[] HEADER_WIDTHS = { 3000, 10000, 6000, 10000, 20000, 10000 };
+
+    @GetMapping("/reporteDocenteExcel")
+    public void exportExcel(
+            @RequestParam(name = "nombre", required = false, defaultValue = "") String nombre,
+            @RequestParam(name = "dni", required = false, defaultValue = "") String dni,
+            @RequestParam(name = "estado", required = false, defaultValue = "1") int estado,
+            @RequestParam(name = "idUbigeo", required = false, defaultValue = "-1") int idUbigeo,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+
+        Workbook excel = null;
+        try {
+            excel = new XSSFWorkbook();
+            Sheet sheet = excel.createSheet(SHEET);
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, HEADER_WIDTHS.length - 1));
+
+            for (int i = 0; i < HEADER_WIDTHS.length; i++) {
+                // sheet.setColumnWidth(i, HEADER_WIDTHS[i] * 256);
+                sheet.setColumnWidth(i, HEADER_WIDTHS[i]);
+            }
+
+            CellStyle estiloHeadCentrado = UtilExcel.setEstiloHeadCentrado(excel);
+            CellStyle estiloHeadIzquierda = UtilExcel.setEstiloHeadIzquierda(excel);
+            CellStyle estiloNormalCentrado = UtilExcel.setEstiloNormalCentrado(excel);
+            CellStyle estiloNormalIzquierda = UtilExcel.setEstiloNormalIzquierdo(excel);
+
+            // Row 0
+            Row row0 = sheet.createRow(0);
+            Cell celAuxs = row0.createCell(0);
+            celAuxs.setCellStyle(estiloHeadIzquierda);
+            celAuxs.setCellValue(TITLE);
+
+            // Row 1
+            Row row1 = sheet.createRow(1);
+            Cell celAuxs1 = row1.createCell(0);
+            celAuxs1.setCellValue("");
+
+            // Row 2
+            Row row2 = sheet.createRow(2);
+            for (int i = 0; i < HEADERS.length; i++) {
+                Cell celda1 = row2.createCell(i);
+                celda1.setCellStyle(estiloHeadCentrado);
+                celda1.setCellValue(HEADERS[i]);
+            }
+
+            response.setContentType("application/vnd.ms-excel");
+            response.addHeader("Content-disposition", "attachment; filename=ReporteDocentes.xlsx");
+
+            OutputStream outputStream = response.getOutputStream();
+            excel.write(outputStream);
+            outputStream.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (excel != null)
+                    excel.close();
+            } catch (Exception e2) {
+                System.out.println(e2.getMessage());
+            }
+        }
     }
 }
