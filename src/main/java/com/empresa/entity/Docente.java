@@ -18,7 +18,6 @@ import jakarta.persistence.TemporalType;
 @Entity
 @Table(name = "docente")
 public class Docente {
-	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +44,7 @@ public class Docente {
 	}
 
 	public String getReporteFechaRegistro() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return sdf.format(fechaRegistro);
 	}
 	// <- For Reports
