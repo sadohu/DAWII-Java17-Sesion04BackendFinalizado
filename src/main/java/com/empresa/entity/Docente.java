@@ -1,5 +1,6 @@
 package com.empresa.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -17,6 +18,7 @@ import jakarta.persistence.TemporalType;
 @Entity
 @Table(name = "docente")
 public class Docente {
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +26,7 @@ public class Docente {
 	private String nombre;
 	private String dni;
 	private int estado;
-	 
+
 	@ManyToOne
 	@JoinColumn(name = "idUbigeo")
 	private Ubigeo ubigeo;
@@ -33,7 +35,20 @@ public class Docente {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "America/Lima")
 	private Date fechaRegistro;
 
-	
+	// For Reports ->
+	public String getReporteEstado() {
+		return estado == 1 ? "Activo" : "Inactivo";
+	}
+
+	public String getReporteUbigeo() {
+		return ubigeo.getDepartamento() + " - " + ubigeo.getProvincia() + " - " + ubigeo.getDistrito();
+	}
+
+	public String getReporteFechaRegistro() {
+		return sdf.format(fechaRegistro);
+	}
+	// <- For Reports
+
 	public Date getFechaRegistro() {
 		return fechaRegistro;
 	}
@@ -81,7 +96,5 @@ public class Docente {
 	public void setUbigeo(Ubigeo ubigeo) {
 		this.ubigeo = ubigeo;
 	}
-
-
 
 }
