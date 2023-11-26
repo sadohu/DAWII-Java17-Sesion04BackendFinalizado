@@ -18,17 +18,16 @@ import com.empresa.service.DocenteService;
 @CrossOrigin(origins = "http://localhost:4200")
 public class DocenteConsultaController {
     @Autowired
-	private DocenteService docenteService;
+    private DocenteService docenteService;
 
     @ResponseBody
     @GetMapping("/consultaDocentePorParametros")
     public List<Docente> listaConsultaDocente(
-        @RequestParam(name = "nombre", required = false, defaultValue = "") String nombre,
-        @RequestParam(name = "dni", required = false, defaultValue = "") String dni,
-        @RequestParam(name = "estado", required = false, defaultValue = "1") int estado,
-        @RequestParam(name = "idUbigeo", required = false, defaultValue = "-1")  int idUbigeo
-        ){
-        List<Docente> list = docenteService.listaConsulta("%"+nombre+"%", dni, estado, idUbigeo);
+            @RequestParam(name = "nombre", required = false, defaultValue = "") String nombre,
+            @RequestParam(name = "dni", required = false, defaultValue = "") String dni,
+            @RequestParam(name = "estado", required = false, defaultValue = "1") int estado,
+            @RequestParam(name = "idUbigeo", required = false, defaultValue = "-1") int idUbigeo) {
+        List<Docente> list = docenteService.listaConsulta("%" + nombre + "%", dni, estado, idUbigeo);
         return list;
     }
 }
