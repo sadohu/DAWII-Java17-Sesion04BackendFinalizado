@@ -102,7 +102,7 @@ public class DocenteConsultaController {
 
     }
 
-    private static String[] HEADERS = { "ID", "NOMBRE", "DNI", "DIRECCION", "ESTADO", "IDUBIGEO" };
+    private static String[] HEADERS = { "ID", "NOMBRE", "DNI", "ESTADO", "UBIGEO", "FECHA REGISTRO" };
     private static String SHEET = "Docentes";
     private static String TITLE = "REPORTE DE DOCENTES";
     private static int[] HEADER_WIDTHS = { 3000, 10000, 6000, 10000, 20000, 10000 };
@@ -149,6 +149,37 @@ public class DocenteConsultaController {
                 Cell celda1 = row2.createCell(i);
                 celda1.setCellStyle(estiloHeadCentrado);
                 celda1.setCellValue(HEADERS[i]);
+            }
+
+            List<Docente> list = docenteService.listaConsulta("%" + nombre + "%", dni, estado, idUbigeo);
+            // Fila 3....n
+            int rowIdx = 3;
+            for (Docente obj : list) {
+                Row row = sheet.createRow(rowIdx++);
+
+                Cell cel0 = row.createCell(0);
+                cel0.setCellValue(obj.getIdDocente());
+                cel0.setCellStyle(estiloNormalCentrado);
+
+                Cell cel1 = row.createCell(1);
+                cel1.setCellValue(obj.getNombre());
+                cel1.setCellStyle(estiloNormalIzquierda);
+
+                Cell cel2 = row.createCell(2);
+                cel2.setCellValue(obj.getDni());
+                cel2.setCellStyle(estiloNormalCentrado);
+
+                Cell cel3 = row.createCell(3);
+                cel3.setCellValue(obj.getReporteEstado());
+                cel3.setCellStyle(estiloNormalCentrado);
+
+                Cell cel4 = row.createCell(4);
+                cel4.setCellValue(obj.getReporteUbigeo());
+                cel4.setCellStyle(estiloNormalIzquierda);
+
+                Cell cel5 = row.createCell(5);
+                cel5.setCellValue(obj.getReporteFechaRegistro());
+                cel5.setCellStyle(estiloNormalCentrado);
             }
 
             response.setContentType("application/vnd.ms-excel");
