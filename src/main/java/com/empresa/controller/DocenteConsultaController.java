@@ -66,8 +66,12 @@ public class DocenteConsultaController {
             String fileRoute = request.getServletContext().getRealPath("/WEB-INF/reportes/ReporteDocente.jasper");
             log.info("Ruta del reporte: " + fileRoute);
 
+            String fileImgRoute = request.getServletContext().getRealPath("/WEB-INF/img/logo.png");
+            log.info("Ruta del reporte: " + fileImgRoute);
+
             // Paso 3: Parámetros del reporte
             Map<String, Object> parameters = new HashMap<String, Object>();
+            parameters.put("RUTA_LOGO", fileImgRoute);
 
             // Paso 4: Juntar la fuente de datos con el diseño del reporte
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new FileInputStream(new File(fileRoute)));
