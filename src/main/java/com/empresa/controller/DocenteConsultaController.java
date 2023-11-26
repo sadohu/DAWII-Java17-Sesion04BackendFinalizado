@@ -107,7 +107,7 @@ public class DocenteConsultaController {
     private static String TITLE = "REPORTE DE DOCENTES";
     private static int[] HEADER_WIDTHS = { 3000, 10000, 6000, 10000, 20000, 10000 };
 
-    @GetMapping("/reporteDocenteExcel")
+    @PostMapping("/reporteDocenteExcel")
     public void exportExcel(
             @RequestParam(name = "nombre", required = false, defaultValue = "") String nombre,
             @RequestParam(name = "dni", required = false, defaultValue = "") String dni,
